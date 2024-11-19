@@ -1,0 +1,83 @@
+<div class="contact-card">
+  <div class="contact-header">
+    <h3 (click)="openDetails()">{{ contact.name }}</h3>
+    <div class="contact-actions">
+      <button class="edit-button" (click)="onEdit()">✏️</button>
+      <button class="delete-button" (click)="onDelete()">🗑️</button>
+      <button class="favorite-button" (click)="toggleFavorite()">
+        {{ contact.isFavorite ? '★' : '☆' }}
+      </button>
+      <button class="call-button" (click)="callContact()">📞</button>
+      <button class="whatsapp-button" (click)="sendWhatsApp()">💬</button>
+      <button class="email-button" (click)="sendEmail()">✉️</button>
+      <button class="map-button" (click)="openMaps()">📍</button>
+    </div>
+  </div>
+
+  <!-- Modal para los detalles del contacto -->
+  <div class="contact-details-modal" *ngIf="showDetails">
+    <div class="modal-content">
+      <span class="close-button" (click)="closeDetails()">&times;</span>
+      <h3>{{ contact.name }}</h3>
+      <p><strong>Phone:</strong> {{ contact.phone }}</p>
+      <p><strong>Email:</strong> {{ contact.email }}</p>
+      <p>
+        <strong>Address:</strong>
+        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + contact.address" target="_blank">
+          {{ contact.address }}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- <div class="contact-card">
+    <div class="contact-details">
+      <h3>{{ contact.name }}</h3>
+      <p>Phone: {{ contact.phone }}</p>
+      <p>Email: {{ contact.email }}</p>
+      <p>
+        Address: 
+        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + contact.address" target="_blank">
+          {{ contact.address }}
+        </a>
+      </p>
+    </div>
+    <div class="contact-actions">
+        <button (click)="onEdit()">Edit</button>
+        <button (click)="onDelete()">Delete</button>
+      <button class="favorite-button" (click)="toggleFavorite()">
+        <img [src]="contact.isFavorite ? 'assets/icons/star-filled.svg' : 'assets/icons/star-outline.svg'" alt="Favorite">
+      </button>
+      <button (click)="callContact()">Call</button>
+      <button (click)="sendWhatsApp()">WhatsApp</button>
+      <button (click)="sendEmail()">Email</button>
+    </div>
+  </div> -->
+  
+  <!-- <div class="contact-card">
+    <div class="contact-details">
+      <h3>{{ contact.name }}</h3>
+      <p>Phone: {{ contact.phone }}</p>
+      <p>Email: {{ contact.email }}</p>
+      <p>
+        Address: 
+        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + contact.address" target="_blank">
+          {{ contact.address }}
+        </a>
+      </p>
+    </div>
+    <div class="contact-actions">
+        <button (click)="onEdit()">Edit</button>
+        <button (click)="onDelete()">Delete</button>
+        <button class="favorite-button" (click)="toggleFavorite()">
+          <span>{{ contact.isFavorite ? '★' : '☆' }}</span>
+        </button>    
+        <button (click)="callContact()">Call</button>
+        <button (click)="sendWhatsApp()">WhatsApp</button>
+        <button (click)="sendEmail()">Email</button>
+    </div>
+</div> -->

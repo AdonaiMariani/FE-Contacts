@@ -1,0 +1,122 @@
+<div class="contacts-header">
+  <h2>Contacts</h2>
+  <button routerLink="/contacts/add">+ Add Contact</button>
+  <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar">
+</div>
+
+<div class="favorites-section" *ngIf="favorites.length > 0">
+  <h3>Favorites</h3>
+  <div class="favorites-list">
+    <app-contact-card
+      *ngFor="let contact of favorites"
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()">
+    </app-contact-card>
+  </div>
+</div>
+
+<div class="contacts-list">
+  <h3>All Contacts</h3>
+  <div *ngFor="let contact of filteredContacts">
+    <app-contact-card
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()">
+    </app-contact-card>
+  </div>
+</div>
+
+<!-- Modal for contact details -->
+<div *ngIf="selectedContact" class="contact-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ selectedContact.name }}</h3>
+      <button class="modal-close-button" (click)="closeContactDetails()">X</button>
+    </div>
+    <div class="modal-details">
+      <p><strong>Email:</strong> {{ selectedContact.email }}</p>
+      <p><strong>Phone:</strong> {{ selectedContact.phone }}</p>
+      <p><strong>Address:</strong> {{ selectedContact.address }}</p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <div class="contacts-header">
+  <h2>Contacts</h2>
+  <button routerLink="/contacts/add">+ Add Contact</button>
+  <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar">
+</div>
+
+<-- Favorites Section -->
+<!-- <div class="favorites-section" *ngIf="favorites.length > 0">
+  <h3>Favorites</h3>
+  <div class="favorites-list">
+    <app-contact-card
+      *ngFor="let contact of favorites"
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()"
+      (contactNameClicked)="openContactDetails(contact)">
+    </app-contact-card>
+  </div>
+</div>
+
+<-- All Contacts Section -->
+<!-- <div class="contacts-list">
+  <h3>All Contacts</h3>
+  <div *ngFor="let contact of filteredContacts">
+    <app-contact-card 
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()"
+      (contactNameClicked)="openContactDetails(contact)">
+    </app-contact-card>
+  </div>
+</div>
+
+Modal para mostrar los detalles del contacto -->
+<!-- <div class="modal" *ngIf="selectedContact" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Detalles del Contacto</h3>
+    <p><strong>Nombre:</strong> {{ selectedContact.name }}</p>
+    <p><strong>Teléfono:</strong> {{ selectedContact.phone }}</p>
+    <p><strong>Email:</strong> {{ selectedContact.email }}</p>
+    <p><strong>Dirección:</strong> {{ selectedContact.address }}</p>
+    <button (click)="closeModal()">Cerrar</button>
+  </div>
+</div> --> 
+ 
+
+  <!-- <div class="contacts-header">
+    <h2>Contacts</h2>
+    <button routerLink="/contacts/add">+ Add Contact</button>
+    <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" class="search-bar">
+    <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar">
+  </div>
+  
+  <div class="favorites-section" *ngIf="favorites.length > 0">
+    <h3>Favorites</h3>
+    <div class="favorites-list">
+      <app-contact-card
+        *ngFor="let contact of favorites"
+        [contact]="contact"
+        (contactDeleted)="onContactDeleted($event)"
+        (contactFavoriteChanged)="onContactFavoriteChanged()">
+      </app-contact-card>
+    </div>
+  </div>
+  
+  <div class="contacts-list">
+    <h3>All Contacts</h3>
+    <div *ngFor="let contact of filteredContacts">
+      <app-contact-card 
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()">
+      </app-contact-card>
+    </div>
+  </div>
+   -->
