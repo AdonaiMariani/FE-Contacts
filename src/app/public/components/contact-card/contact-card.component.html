@@ -9,8 +9,8 @@
       </button>
       <button class="call-button" (click)="callContact()">📞</button>
       <button class="whatsapp-button" (click)="sendWhatsApp()">💬</button>
-      <button class="email-button" (click)="sendEmail()">✉️</button>
-      <button class="map-button" (click)="openMaps()">📍</button>
+      <button *ngIf="contact.email" class="email-button" (click)="sendEmail()">✉️</button>
+      <button *ngIf="contact.address" class="map-button" (click)="openMaps()">📍</button>
     </div>
   </div>
 
