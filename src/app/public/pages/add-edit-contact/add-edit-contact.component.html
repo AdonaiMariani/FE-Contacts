@@ -1,3 +1,104 @@
+<div class="form-container">
+  <h2>{{ contactId ? 'Edit Contact' : 'Add Contact' }}</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+    
+    <!-- Campo para el nombre -->
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" type="text" [ngClass]="{'has-error': contactForm.get('name')?.invalid && contactForm.get('name')?.touched}">
+      <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" class="error-message">
+        Name is required.
+      </div>
+    </div>
+
+    <!-- Campo para el teléfono -->
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input id="phone" formControlName="phone" type="text" [ngClass]="{'has-error': contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched}">
+      <div *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched" class="error-message">
+        Phone number is required and must be valid (e.g., +123456789).
+      </div>
+    </div>
+
+    <!-- Campo para el correo electrónico -->
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" [ngClass]="{'has-error': contactForm.get('email')?.invalid && contactForm.get('email')?.touched}">
+      <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error-message">
+        Must be a valid email address.
+      </div>
+    </div>
+
+    <!-- Campo para la dirección -->
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <input id="address" formControlName="address" type="text">
+    </div>
+
+    <!-- Checkbox para definir como favorito (solo visible en modo edición) -->
+    <div class="form-group" *ngIf="contactId">
+      <label for="isFavorite">Favorite:</label>
+      <input id="isFavorite" formControlName="isFavorite" type="checkbox">
+    </div>
+
+    <!-- Botón para guardar -->
+    <button type="submit" [disabled]="contactForm.invalid">Save</button>
+
+    <div *ngIf="formSubmitAttempt && contactForm.invalid" class="form-error-message">
+      Please fix the errors before submitting.
+    </div>
+  </form>
+</div>
+
+
+<!-- <div class="form-container">
+  <h2>{{ contactId ? 'Edit Contact' : 'Add Contact' }}</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <! Campo para el nombre -->
+    <!-- <div class="form-group">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" type="text" [ngClass]="{'has-error': contactForm.get('name')?.invalid && contactForm.get('name')?.touched}">
+      <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" class="error-message">
+        Name is required.
+      </div>
+    </div> --> 
+
+    <!-- Campo para el teléfono
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input id="phone" formControlName="phone" type="text" [ngClass]="{'has-error': contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched}">
+      <div *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched" class="error-message">
+        Phone number is required and must be valid (e.g., +123456789).
+      </div>
+    </div>
+
+    <!- Campo para el correo electrónico -->
+    <!-- <div class="form-group">
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" [ngClass]="{'has-error': contactForm.get('email')?.invalid && contactForm.get('email')?.touched}">
+      <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" class="error-message">
+        Must be a valid email address.
+      </div>
+    </div>
+
+    <!- Campo para la dirección -->
+    <!-- <div class="form-group">
+      <label for="address">Address:</label>
+      <input id="address" formControlName="address" type="text">
+    </div>
+
+    <!- Checkbox para definir como favorito (solo visible en modo edición) -->
+    <!-- <div class="form-group" *ngIf="contactId">
+      <label for="isFavorite">Favorite:</label>
+      <input id="isFavorite" formControlName="isFavorite" type="checkbox">
+    </div> --> 
+
+    <!-- Botón para guardar -->
+    <!-- <button type="submit" [disabled]="contactForm.invalid">Save</button>
+  </form>
+</div> --> 
+
+
 <!-- <p>add-edit-contact works!</p> -->
 <!-- <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
     <label for="name">Name:</label>
@@ -15,42 +116,5 @@
     <button type="submit">Save</button>
   </form> -->
   
-  <p>add-edit-contact works!</p>
-  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-    <!-- Campo para el nombre -->
-    <label for="name">Name:</label>
-    <input id="name" formControlName="name" type="text">
-    <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" class="error-message">
-      <p>Name is required.</p>
-    </div>
   
-    <!-- Campo para el teléfono -->
-    <label for="phone">Phone:</label>
-    <input id="phone" formControlName="phone" type="text">
-    <div *ngIf="contactForm.get('phone')?.invalid && contactForm.get('phone')?.touched" class="error-message">
-      <p>Phone is required.</p>
-    </div>
-  
-    <!-- Campo para el correo electrónico -->
-    <label for="email">Email:</label>
-    <input id="email" formControlName="email" type="email">
-  
-    <!-- Campo para la dirección -->
-    <label for="address">Address:</label>
-    <input id="address" formControlName="address" type="text">
-  
-    <!-- Checkbox para definir como favorito -->
-    <label for="isFavorite">Favorite:</label>
-    <input id="isFavorite" formControlName="isFavorite" type="checkbox">
-  
-    <!-- Botón para guardar -->
-    <button type="submit" [disabled]="contactForm.invalid">Save</button>
-  </form>
-  
-  <style>
-    .error-message {
-      color: red;
-      font-size: 0.9em;
-    }
-  </style>
-  
+ 

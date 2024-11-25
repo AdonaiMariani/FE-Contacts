@@ -1,4 +1,6 @@
-//CON BEHAVIOR SUBJECT
+// SIN CÓDIGO REDUNDANTE
+// //CON LISTAS JUNTAS
+// //CON BEHAVIOR SUBJECT
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Contact } from 'src/app/interfaces/contact';
 import { ContactService } from 'src/app/services/contact.service';
@@ -7,94 +9,290 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.css']
+  styleUrls: ['./contacts.component.css'],
 })
 export class ContactsComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
   filteredContacts: Contact[] = [];
-  favorites: Contact[] = [];
   searchTerm: string = '';
-  selectedContact: Contact | null = null; // Para manejar el contacto seleccionado
   private subscription: Subscription = new Subscription();
 
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
+    // Subscribe to contacts from the service
     this.subscription.add(
       this.contactService.contacts$.subscribe({
         next: (contacts: Contact[]) => {
           this.contacts = contacts;
           this.updateFilteredContacts();
-          this.updateFavorites();
         },
         error: (err) => {
           console.error('Error fetching contacts', err);
-        }
+        },
       })
     );
 
+    // Fetch initial contact data
     this.contactService.getContacts().subscribe();
   }
 
   ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
     this.subscription.unsubscribe();
   }
 
+  // Filter contacts based on the search term
   filterContacts(): void {
     if (this.searchTerm.trim()) {
-      this.filteredContacts = this.contacts.filter(contact =>
+      this.filteredContacts = this.contacts.filter((contact) =>
         contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
         contact.phone.includes(this.searchTerm)
       );
-      this.favorites = this.filteredContacts.filter(contact => contact.isFavorite);
     } else {
       this.filteredContacts = [...this.contacts];
-      this.updateFavorites();
     }
-    console.log('Filtered contacts:', this.filteredContacts);
+    this.sortContacts();
   }
 
+  // Handle the event when a contact is deleted
   onContactDeleted(contactId: number): void {
-    console.log(`Eliminando contacto con ID: ${contactId}`);
-    this.contactService.deleteContact(contactId).subscribe({
-      next: () => {
-        console.log(`Contacto con ID ${contactId} eliminado correctamente`);
-      },
-      error: (err) => {
-        console.error('Error deleting contact', err);
-      }
-    });
+    console.log(`Deleting contact with ID: ${contactId}`);
+    this.contacts = this.contacts.filter((contact) => contact.id !== contactId);
+    this.updateFilteredContacts();
   }
 
+  // Handle the event when a contact's favorite state changes
   onContactFavoriteChanged(): void {
-    this.updateFavorites();
-    console.log('Lista de favoritos actualizada después del cambio de favorito');
+    console.log('Favorite state changed, updating list');
+    this.updateFilteredContacts();
   }
 
+  // Update the filtered contacts list and apply sorting
   updateFilteredContacts(): void {
     this.filterContacts();
   }
 
-  updateFavorites(): void {
-    this.favorites = this.filteredContacts.filter(contact => contact.isFavorite);
-    console.log('Updated favorites:', this.favorites);
-  }
-
-  // Métodos para abrir y cerrar el modal de detalles del contacto
-  openContactDetails(contact: Contact): void {
-    this.selectedContact = contact;
-  }
-
-  closeContactDetails(): void {
-    this.selectedContact = null;
-  }
-
-  // Método de ejemplo para editar el contacto
-  editContact(contact: Contact): void {
-    console.log(`Editando el contacto con ID: ${contact.id}`);
+  // Sort contacts alphabetically with favorites at the top
+  sortContacts(): void {
+    this.filteredContacts.sort((a, b) => {
+      if (a.isFavorite === b.isFavorite) {
+        return a.name.localeCompare(b.name);
+      }
+      return a.isFavorite ? -1 : 1;
+    });
   }
 }
+
+
+
+
+
+// // CON CÓDIGO REDUNDANTE
+// // //CON LISTAS JUNTAS
+// // //CON BEHAVIOR SUBJECT
+// import { Component, OnInit, OnDestroy } from '@angular/core';
+// import { Contact } from 'src/app/interfaces/contact';
+// import { ContactService } from 'src/app/services/contact.service';
+// import { Subscription } from 'rxjs';
+
+// @Component({
+//   selector: 'app-contacts',
+//   templateUrl: './contacts.component.html',
+//   styleUrls: ['./contacts.component.css']
+// })
+// export class ContactsComponent implements OnInit, OnDestroy {
+//   contacts: Contact[] = [];
+//   filteredContacts: Contact[] = [];
+//   searchTerm: string = '';
+//   selectedContact: Contact | null = null; // Para manejar el contacto seleccionado
+//   private subscription: Subscription = new Subscription();
+
+//   constructor(private contactService: ContactService) {}
+
+//   ngOnInit(): void {
+//     this.subscription.add(
+//       this.contactService.contacts$.subscribe({
+//         next: (contacts: Contact[]) => {
+//           this.contacts = contacts;
+//           this.updateFilteredContacts();
+//         },
+//         error: (err) => {
+//           console.error('Error fetching contacts', err);
+//         }
+//       })
+//     );
+
+//     this.contactService.getContacts().subscribe();
+//   }
+
+//   ngOnDestroy(): void {
+//     this.subscription.unsubscribe();
+//   }
+
+//   filterContacts(): void {
+//     if (this.searchTerm.trim()) {
+//       this.filteredContacts = this.contacts.filter(contact =>
+//         contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+//         (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
+//         contact.phone.includes(this.searchTerm)
+//       );
+//     } else {
+//       this.filteredContacts = [...this.contacts];
+//     }
+//     this.sortContacts();
+//     console.log('Filtered contacts:', this.filteredContacts);
+//   }
+
+//   onContactDeleted(contactId: number): void {
+//     console.log(`Eliminando contacto con ID: ${contactId}`);
+//     this.contactService.deleteContact(contactId).subscribe({
+//       next: () => {
+//         console.log(`Contacto con ID ${contactId} eliminado correctamente`);
+//       },
+//       error: (err) => {
+//         console.error('Error deleting contact', err);
+//       }
+//     });
+//   }
+
+//   onContactFavoriteChanged(): void {
+//     this.updateFilteredContacts();
+//     console.log('Lista de contactos actualizada después del cambio de favorito');
+//   }
+
+//   updateFilteredContacts(): void {
+//     this.filterContacts();
+//   }
+
+//   // Ordenar los contactos alfabéticamente con los favoritos al principio
+//   sortContacts(): void {
+//     this.filteredContacts.sort((a, b) => {
+//       if (a.isFavorite === b.isFavorite) {
+//         return a.name.localeCompare(b.name);
+//       }
+//       return a.isFavorite ? -1 : 1;
+//     });
+//   }
+
+//   // Métodos para abrir y cerrar el modal de detalles del contacto
+//   openContactDetails(contact: Contact): void {
+//     this.selectedContact = contact;
+//   }
+
+//   closeContactDetails(): void {
+//     this.selectedContact = null;
+//   }
+
+//   // Método de ejemplo para editar el contacto
+//   editContact(contact: Contact): void {
+//     console.log(`Editando el contacto con ID: ${contact.id}`);
+//   }
+// }
+
+
+
+
+
+// //CON LISTAS SEPARADAS
+// //CON BEHAVIOR SUBJECT
+// import { Component, OnInit, OnDestroy } from '@angular/core';
+// import { Contact } from 'src/app/interfaces/contact';
+// import { ContactService } from 'src/app/services/contact.service';
+// import { Subscription } from 'rxjs';
+
+// @Component({
+//   selector: 'app-contacts',
+//   templateUrl: './contacts.component.html',
+//   styleUrls: ['./contacts.component.css']
+// })
+// export class ContactsComponent implements OnInit, OnDestroy {
+//   contacts: Contact[] = [];
+//   filteredContacts: Contact[] = [];
+//   favorites: Contact[] = [];
+//   searchTerm: string = '';
+//   selectedContact: Contact | null = null; // Para manejar el contacto seleccionado
+//   private subscription: Subscription = new Subscription();
+
+//   constructor(private contactService: ContactService) {}
+
+//   ngOnInit(): void {
+//     this.subscription.add(
+//       this.contactService.contacts$.subscribe({
+//         next: (contacts: Contact[]) => {
+//           this.contacts = contacts;
+//           this.updateFilteredContacts();
+//           this.updateFavorites();
+//         },
+//         error: (err) => {
+//           console.error('Error fetching contacts', err);
+//         }
+//       })
+//     );
+
+//     this.contactService.getContacts().subscribe();
+//   }
+
+//   ngOnDestroy(): void {
+//     this.subscription.unsubscribe();
+//   }
+
+//   filterContacts(): void {
+//     if (this.searchTerm.trim()) {
+//       this.filteredContacts = this.contacts.filter(contact =>
+//         contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+//         (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
+//         contact.phone.includes(this.searchTerm)
+//       );
+//       this.favorites = this.filteredContacts.filter(contact => contact.isFavorite);
+//     } else {
+//       this.filteredContacts = [...this.contacts];
+//       this.updateFavorites();
+//     }
+//     console.log('Filtered contacts:', this.filteredContacts);
+//   }
+
+//   onContactDeleted(contactId: number): void {
+//     console.log(`Eliminando contacto con ID: ${contactId}`);
+//     this.contactService.deleteContact(contactId).subscribe({
+//       next: () => {
+//         console.log(`Contacto con ID ${contactId} eliminado correctamente`);
+//       },
+//       error: (err) => {
+//         console.error('Error deleting contact', err);
+//       }
+//     });
+//   }
+
+//   onContactFavoriteChanged(): void {
+//     this.updateFavorites();
+//     console.log('Lista de favoritos actualizada después del cambio de favorito');
+//   }
+
+//   updateFilteredContacts(): void {
+//     this.filterContacts();
+//   }
+
+//   updateFavorites(): void {
+//     this.favorites = this.filteredContacts.filter(contact => contact.isFavorite);
+//     console.log('Updated favorites:', this.favorites);
+//   }
+
+//   // Métodos para abrir y cerrar el modal de detalles del contacto
+//   openContactDetails(contact: Contact): void {
+//     this.selectedContact = contact;
+//   }
+
+//   closeContactDetails(): void {
+//     this.selectedContact = null;
+//   }
+
+//   // Método de ejemplo para editar el contacto
+//   editContact(contact: Contact): void {
+//     console.log(`Editando el contacto con ID: ${contact.id}`);
+//   }
+// }
 
 
 

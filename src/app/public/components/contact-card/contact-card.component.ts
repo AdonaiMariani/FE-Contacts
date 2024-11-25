@@ -14,6 +14,7 @@ export class ContactCardComponent {
   @Output() contactFavoriteChanged = new EventEmitter<void>();
 
   showDetails: boolean = false;
+  showDeleteModal: boolean = false;
 
   constructor(
     private router: Router,
@@ -44,20 +45,41 @@ export class ContactCardComponent {
     this.router.navigate(['/contacts/edit', this.contact.id]);
   }
 
-  // Método para eliminar el contacto
+  // Método para confirmar y eliminar el contacto
   onDelete(): void {
-    if (confirm('Are you sure you want to delete this contact?')) {
-      this.contactService.deleteContact(this.contact.id).subscribe({
-        next: () => {
-          this.contactDeleted.emit(this.contact.id); // Emitir evento para actualizar la lista
-          console.log(`Contacto con ID ${this.contact.id} eliminado correctamente`);
-        },
-        error: (err) => {
-          console.error('Error deleting contact', err);
-        }
-      });
-    }
+    this.contactService.deleteContact(this.contact.id).subscribe({
+      next: () => {
+        this.contactDeleted.emit(this.contact.id); // Emitir evento para actualizar la lista
+        console.log(`Contacto con ID ${this.contact.id} eliminado correctamente`);
+        this.closeDeleteModal(); // Cerrar el modal después de la eliminación
+      },
+      error: (err) => {
+        console.error('Error deleting contact', err);
+      }
+    });
   }
+
+  // Métodos para manejar la apertura y cierre del modal de eliminación
+  openDeleteModal(): void {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
+  // onDelete(): void {
+  //   if (confirm('Are you sure you want to delete this contact?')) {
+  //     this.contactService.deleteContact(this.contact.id).subscribe({
+  //       next: () => {
+  //         this.contactDeleted.emit(this.contact.id); // Emitir evento para actualizar la lista
+  //         console.log(`Contacto con ID ${this.contact.id} eliminado correctamente`);
+  //       },
+  //       error: (err) => {
+  //         console.error('Error deleting contact', err);
+  //       }
+  //     });
+  //   }
+  // }
 
   // Método para abrir el modal de detalles
   openDetails(): void {
@@ -65,13 +87,23 @@ export class ContactCardComponent {
   }
 
   // Método para cerrar el modal de detalles
-  closeDetails(): void {
+  closeDetails(event: Event): void {
+    event.stopPropagation(); // Detiene la propagación del evento para evitar reabrir el modal
     this.showDetails = false;
   }
 
+  // closeDetails(): void {
+  //   this.showDetails = false;
+  // }
+
   // Método para llamar al contacto
   callContact(): void {
-    console.log(`Calling ${this.contact.phone}`);
+    if (this.contact.phone) {
+      window.location.href = `tel:${this.contact.phone}`;
+    } else {
+      console.error('Número de teléfono no disponible');
+    }
+    
   }
 
   // Método para enviar mensaje de WhatsApp al contacto

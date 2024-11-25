@@ -1,4 +1,76 @@
+<!-- SIN CÓDIGO REDUNDANTE -->
+<!-- CON LISTAS JUNTAS -->
 <div class="contacts-header">
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Contacts..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="filterContacts()"
+      class="search-bar"
+    />
+  </div>
+  <div class="add-contact-container">
+    <button routerLink="/contacts/add" class="add-contact-button">+ Add Contact</button>
+  </div>
+</div>
+
+<div class="contacts-list">
+  <div *ngFor="let contact of filteredContacts">
+    <app-contact-card
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()">
+    </app-contact-card>
+  </div>
+</div>
+
+
+
+
+<!-- CON CÓDIGO REDUNDANTE -->
+<!-- CON LISTAS JUNTAS -->
+<!-- <div class="contacts-header">
+  <div class="search-container">
+    <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar">
+  </div>
+  <div class="add-contact-container">
+    <button routerLink="/contacts/add" class="add-contact-button">+ Add Contact</button>
+  </div>
+  <!- <h2>Contacts</h2>
+  <button routerLink="/contacts/add">+ Add Contact</button>
+  <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar"> -->
+<!-- </div>  -->
+
+<!-- <div class="contacts-list">
+  <!- <h3>All Contacts</h3> -->
+  <!-- <div *ngFor="let contact of filteredContacts"[ngClass]="{'favorite-contact': contact.isFavorite}">
+    <app-contact-card
+      [contact]="contact"
+      (contactDeleted)="onContactDeleted($event)"
+      (contactFavoriteChanged)="onContactFavoriteChanged()">
+    </app-contact-card>
+  </div>
+</div> --> --
+
+<!-- Modal for contact details -->
+<!-- <div *ngIf="selectedContact" class="contact-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>{{ selectedContact.name }}</h3>
+      <button class="modal-close-button" (click)="closeContactDetails()">X</button>
+    </div>
+    <div class="modal-details">
+      <p><strong>Email:</strong> {{ selectedContact.email }}</p>
+      <p><strong>Phone:</strong> {{ selectedContact.phone }}</p>
+      <p><strong>Address:</strong> {{ selectedContact.address }}</p>
+    </div>
+  </div>
+</div> -->
+
+
+<!-- CON LISTA SEPARADAS -->
+<!-- <div class="contacts-header">
   <h2>Contacts</h2>
   <button routerLink="/contacts/add">+ Add Contact</button>
   <input type="text" placeholder="Search Contacts..." [(ngModel)]="searchTerm" (ngModelChange)="filterContacts()" class="search-bar">
@@ -27,8 +99,8 @@
   </div>
 </div>
 
-<!-- Modal for contact details -->
-<div *ngIf="selectedContact" class="contact-modal">
+<! Modal for contact details -->
+<!-- <div *ngIf="selectedContact" class="contact-modal">
   <div class="modal-content">
     <div class="modal-header">
       <h3>{{ selectedContact.name }}</h3>
@@ -40,7 +112,7 @@
       <p><strong>Address:</strong> {{ selectedContact.address }}</p>
     </div>
   </div>
-</div>
+</div> --> 
 
 
 
