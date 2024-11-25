@@ -42,19 +42,27 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  // Filter contacts based on the search term
+  // Filter contacts based only on the name field
   filterContacts(): void {
-    if (this.searchTerm.trim()) {
-      this.filteredContacts = this.contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
-        contact.phone.includes(this.searchTerm)
-      );
-    } else {
-      this.filteredContacts = [...this.contacts];
-    }
+    const searchTermLower = this.searchTerm.toLowerCase();
+    this.filteredContacts = this.contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(searchTermLower)
+    );
     this.sortContacts();
   }
+  // // Filter contacts based on the search term
+  // filterContacts(): void {
+  //   if (this.searchTerm.trim()) {
+  //     this.filteredContacts = this.contacts.filter((contact) =>
+  //       contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //       (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
+  //       contact.phone.includes(this.searchTerm)
+  //     );
+  //   } else {
+  //     this.filteredContacts = [...this.contacts];
+  //   }
+  //   this.sortContacts();
+  // }
 
   // Handle the event when a contact is deleted
   onContactDeleted(contactId: number): void {
