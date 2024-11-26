@@ -2,6 +2,79 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 15px;
+}
+
+.add-contact-container {
+  margin-left: 15px;
+}
+
+.add-contact-button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.add-contact-button:hover {
+  background-color: #0056b3;
+}
+
+.search-container {
+  flex-grow: 1;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Sección de contactos */
+.grouped-contacts h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+  margin: 15px 0 5px;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Espaciado reducido entre contactos */
+  padding: 5px 0;
+}
+
+.contact-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.contact-card:hover {
+  background-color: #f9f9f9;
+  transform: scale(1.02);
+}
+
+.favorite-contact h3 {
+  color: #ffcc00; /* Color amarillo para destacar los contactos favoritos */
+}
+
+
+/* .contacts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 20px;
 }
 
@@ -57,9 +130,11 @@ h2 {
 
 .favorite-contact h3 {
   color: #ffcc00; /* Color amarillo para destacar los contactos favoritos */
-}
+/* } */
 
-.contacts-list,
+
+
+/* .contacts-list,
 .favorites-list {
   display: flex;
   flex-direction: column;
@@ -67,7 +142,7 @@ h2 {
 }
 
 /* Modal styles */
-.contact-modal {
+/* .contact-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -102,7 +177,7 @@ h2 {
 
 .modal-details p {
   margin: 10px 0;
-}
+} */ 
 
 
 

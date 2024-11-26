@@ -1,6 +1,3 @@
-// SIN CÓDIGO REDUNDANTE
-// //CON LISTAS JUNTAS
-// //CON BEHAVIOR SUBJECT
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Contact } from 'src/app/interfaces/contact';
 import { ContactService } from 'src/app/services/contact.service';
@@ -13,14 +10,13 @@ import { Subscription } from 'rxjs';
 })
 export class ContactsComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
-  filteredContacts: Contact[] = [];
+  groupedContacts: { letter: string; contacts: Contact[] }[] = [];
   searchTerm: string = '';
   private subscription: Subscription = new Subscription();
 
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
-    // Subscribe to contacts from the service
     this.subscription.add(
       this.contactService.contacts$.subscribe({
         next: (contacts: Contact[]) => {
@@ -32,66 +28,161 @@ export class ContactsComponent implements OnInit, OnDestroy {
         },
       })
     );
-
-    // Fetch initial contact data
     this.contactService.getContacts().subscribe();
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this.subscription.unsubscribe();
   }
 
-  // Filter contacts based only on the name field
   filterContacts(): void {
-    const searchTermLower = this.searchTerm.toLowerCase();
-    this.filteredContacts = this.contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(searchTermLower)
+    const searchTermLower = this.normalize(this.searchTerm.toLowerCase());
+    const filtered = this.contacts.filter((contact) =>
+      this.normalize(contact.name.toLowerCase()).includes(searchTermLower)
     );
-    this.sortContacts();
-  }
-  // // Filter contacts based on the search term
-  // filterContacts(): void {
-  //   if (this.searchTerm.trim()) {
-  //     this.filteredContacts = this.contacts.filter((contact) =>
-  //       contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-  //       (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
-  //       contact.phone.includes(this.searchTerm)
-  //     );
-  //   } else {
-  //     this.filteredContacts = [...this.contacts];
-  //   }
-  //   this.sortContacts();
-  // }
 
-  // Handle the event when a contact is deleted
+    this.groupedContacts = this.groupContacts(filtered);
+  }
+
   onContactDeleted(contactId: number): void {
-    console.log(`Deleting contact with ID: ${contactId}`);
     this.contacts = this.contacts.filter((contact) => contact.id !== contactId);
     this.updateFilteredContacts();
   }
 
-  // Handle the event when a contact's favorite state changes
   onContactFavoriteChanged(): void {
-    console.log('Favorite state changed, updating list');
     this.updateFilteredContacts();
   }
 
-  // Update the filtered contacts list and apply sorting
   updateFilteredContacts(): void {
     this.filterContacts();
   }
 
-  // Sort contacts alphabetically with favorites at the top
-  sortContacts(): void {
-    this.filteredContacts.sort((a, b) => {
-      if (a.isFavorite === b.isFavorite) {
-        return a.name.localeCompare(b.name);
-      }
-      return a.isFavorite ? -1 : 1;
-    });
+  groupContacts(contacts: Contact[]): { letter: string; contacts: Contact[] }[] {
+    const groups: { [key: string]: Contact[] } = {
+      Favorites: contacts.filter((contact) => contact.isFavorite),
+    };
+
+    contacts
+      .filter((contact) => !contact.isFavorite)
+      .forEach((contact) => {
+        const letter = this.normalize(contact.name.charAt(0).toUpperCase());
+        if (!groups[letter]) {
+          groups[letter] = [];
+        }
+        groups[letter].push(contact);
+      });
+
+    return Object.keys(groups)
+      .sort((a, b) => (a === 'Favorites' ? -1 : a.localeCompare(b))) // Los favoritos siempre primero
+      .map((letter) => ({
+        letter,
+        contacts: groups[letter].sort((a, b) => a.name.localeCompare(b.name)),
+      }));
+  }
+
+  normalize(text: string): string {
+    // Normaliza el texto para eliminar acentos y caracteres especiales
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 }
+
+
+
+
+// // SIN CÓDIGO REDUNDANTE
+// // //CON LISTAS JUNTAS
+// // //CON BEHAVIOR SUBJECT
+// import { Component, OnInit, OnDestroy } from '@angular/core';
+// import { Contact } from 'src/app/interfaces/contact';
+// import { ContactService } from 'src/app/services/contact.service';
+// import { Subscription } from 'rxjs';
+
+// @Component({
+//   selector: 'app-contacts',
+//   templateUrl: './contacts.component.html',
+//   styleUrls: ['./contacts.component.css'],
+// })
+// export class ContactsComponent implements OnInit, OnDestroy {
+//   contacts: Contact[] = [];
+//   filteredContacts: Contact[] = [];
+//   searchTerm: string = '';
+//   private subscription: Subscription = new Subscription();
+
+//   constructor(private contactService: ContactService) {}
+
+//   ngOnInit(): void {
+//     // Subscribe to contacts from the service
+//     this.subscription.add(
+//       this.contactService.contacts$.subscribe({
+//         next: (contacts: Contact[]) => {
+//           this.contacts = contacts;
+//           this.updateFilteredContacts();
+//         },
+//         error: (err) => {
+//           console.error('Error fetching contacts', err);
+//         },
+//       })
+//     );
+
+//     // Fetch initial contact data
+//     this.contactService.getContacts().subscribe();
+//   }
+
+//   ngOnDestroy(): void {
+//     // Unsubscribe from all subscriptions
+//     this.subscription.unsubscribe();
+//   }
+
+//   // Filter contacts based only on the name field
+//   filterContacts(): void {
+//     const searchTermLower = this.searchTerm.toLowerCase();
+//     this.filteredContacts = this.contacts.filter((contact) =>
+//       contact.name.toLowerCase().includes(searchTermLower)
+//     );
+//     this.sortContacts();
+//   }
+//   // // Filter contacts based on the search term
+//   // filterContacts(): void {
+//   //   if (this.searchTerm.trim()) {
+//   //     this.filteredContacts = this.contacts.filter((contact) =>
+//   //       contact.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+//   //       (contact.email?.toLowerCase() ?? '').includes(this.searchTerm.toLowerCase()) ||
+//   //       contact.phone.includes(this.searchTerm)
+//   //     );
+//   //   } else {
+//   //     this.filteredContacts = [...this.contacts];
+//   //   }
+//   //   this.sortContacts();
+//   // }
+
+//   // Handle the event when a contact is deleted
+//   onContactDeleted(contactId: number): void {
+//     console.log(`Deleting contact with ID: ${contactId}`);
+//     this.contacts = this.contacts.filter((contact) => contact.id !== contactId);
+//     this.updateFilteredContacts();
+//   }
+
+//   // Handle the event when a contact's favorite state changes
+//   onContactFavoriteChanged(): void {
+//     console.log('Favorite state changed, updating list');
+//     this.updateFilteredContacts();
+//   }
+
+//   // Update the filtered contacts list and apply sorting
+//   updateFilteredContacts(): void {
+//     this.filterContacts();
+//   }
+
+//   // Sort contacts alphabetically with favorites at the top
+//   sortContacts(): void {
+//     this.filteredContacts.sort((a, b) => {
+//       if (a.isFavorite === b.isFavorite) {
+//         return a.name.localeCompare(b.name);
+//       }
+//       return a.isFavorite ? -1 : 1;
+//     });
+//   }
+// }
 
 
 

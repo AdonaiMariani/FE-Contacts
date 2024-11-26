@@ -1,5 +1,3 @@
-<!-- SIN CÓDIGO REDUNDANTE -->
-<!-- CON LISTAS JUNTAS -->
 <div class="contacts-header">
   <div class="search-container">
     <input
@@ -15,7 +13,41 @@
   </div>
 </div>
 
-<div class="contacts-list">
+<!-- Lista de contactos, incluyendo favoritos y contactos por letra -->
+<div class="grouped-contacts">
+  <div *ngFor="let group of groupedContacts">
+    <h3 class="letter-divider">{{ group.letter }}</h3>
+    <div class="contacts-list">
+      <div *ngFor="let contact of group.contacts">
+        <app-contact-card
+          [contact]="contact"
+          (contactDeleted)="onContactDeleted($event)"
+          (contactFavoriteChanged)="onContactFavoriteChanged()"
+        ></app-contact-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SIN CÓDIGO REDUNDANTE -->
+<!-- CON LISTAS JUNTAS -->
+<!-- <div class="contacts-header">
+  <div class="search-container">
+    <input
+      type="text"
+      placeholder="Search Contacts..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="filterContacts()"
+      class="search-bar"
+    />
+  </div>
+  <div class="add-contact-container">
+    <button routerLink="/contacts/add" class="add-contact-button">+ Add Contact</button>
+  </div>
+</div> -->
+
+<!-- <div class="contacts-list">
   <div *ngFor="let contact of filteredContacts">
     <app-contact-card
       [contact]="contact"
@@ -23,7 +55,7 @@
       (contactFavoriteChanged)="onContactFavoriteChanged()">
     </app-contact-card>
   </div>
-</div>
+</div> -->
 
 
 
