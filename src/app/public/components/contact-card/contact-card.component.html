@@ -1,16 +1,37 @@
+<!-- CON AVATAR Y BOTONES ORDENADOS -->
 <div class="contact-card" [ngClass]="{'favorite-contact-card': contact.isFavorite}" (click)="openDetails()">
+  <!-- Contenedor principal con todo en una sola línea -->
   <div class="contact-header">
-    <h3>{{ contact.name }}</h3>
+    <!-- Avatar -->
+    <div
+      class="contact-avatar"
+      [ngStyle]="{ 'background-color': getAvatarColor(contact.name) }"
+    >
+      <span class="avatar-placeholder">{{ contact.name.charAt(0).toUpperCase() }}</span>
+    </div>
+
+    <!-- Nombre del contacto y estrella -->
+    <div class="contact-info">
+      <h3 class="contact-name">
+        {{ contact.name }}
+        <button class="favorite-button" (click)="toggleFavorite()" (click)="$event.stopPropagation()">
+          {{ contact.isFavorite ? '★' : '☆' }}
+        </button>
+      </h3>
+    </div>
+
+    <!-- Botones de acción (todos en la misma línea) -->
     <div class="contact-actions" (click)="$event.stopPropagation()">
-      <button class="edit-button" (click)="onEdit()">✏️</button>
-      <button class="delete-button" (click)="openDeleteModal()">🗑️</button>
-      <button class="favorite-button" (click)="toggleFavorite()">
-        {{ contact.isFavorite ? '★' : '☆' }}
-      </button>
-      <button class="call-button" (click)="callContact()">📞</button>
-      <button class="whatsapp-button" (click)="sendWhatsApp()">💬</button>
-      <button *ngIf="contact.email" class="email-button" (click)="sendEmail()">✉️</button>
-      <button *ngIf="contact.address" class="map-button" (click)="openMaps()">📍</button>
+      <div class="primary-actions">
+        <button class="call-button" *ngIf="contact.phone" (click)="callContact()">📞</button>
+        <button class="whatsapp-button" *ngIf="contact.phone" (click)="sendWhatsApp()">💬</button>
+        <button class="email-button" *ngIf="contact.email" (click)="sendEmail()">✉️</button>
+        <button class="map-button" *ngIf="contact.address" (click)="openMaps()">📍</button>
+      </div>
+      <div class="secondary-actions">
+        <button class="edit-button" (click)="onEdit()">✏️</button>
+        <button class="delete-button" (click)="openDeleteModal()">🗑️</button>
+      </div>
     </div>
   </div>
 
@@ -30,8 +51,54 @@
     </div>
   </div>
 
+  <!-- Modal de confirmación de eliminación -->
+  <div class="modal" *ngIf="showDeleteModal">
+    <div class="modal-content">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete this contact?</p>
+      <button (click)="onDelete(); $event.stopPropagation()">Yes, delete</button>
+      <button (click)="closeDeleteModal(); $event.stopPropagation()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SIN AVATAR Y BOTONES DESORDENADOS -->
+<!-- <div class="contact-card" [ngClass]="{'favorite-contact-card': contact.isFavorite}" (click)="openDetails()">
+  <div class="contact-header">
+    <h3>{{ contact.name }}</h3>
+    <div class="contact-actions" (click)="$event.stopPropagation()">
+      <button class="edit-button" (click)="onEdit()">✏️</button>
+      <button class="delete-button" (click)="openDeleteModal()">🗑️</button>
+      <button class="favorite-button" (click)="toggleFavorite()">
+        {{ contact.isFavorite ? '★' : '☆' }}
+      </button>
+      <button class="call-button" (click)="callContact()">📞</button>
+      <button class="whatsapp-button" (click)="sendWhatsApp()">💬</button>
+      <button *ngIf="contact.email" class="email-button" (click)="sendEmail()">✉️</button>
+      <button *ngIf="contact.address" class="map-button" (click)="openMaps()">📍</button>
+    </div>
+  </div> -->
+
+  <!-- Modal para los detalles del contacto -->
+  <!-- <div class="modal" *ngIf="showDetails">
+    <div class="modal-content">
+      <span class="close-button" (click)="closeDetails($event)">&times;</span>
+      <h3>{{ contact.name }}</h3>
+      <p><strong>Phone:</strong> {{ contact.phone }}</p>
+      <p><strong>Email:</strong> {{ contact.email }}</p>
+      <p>
+        <strong>Address:</strong>
+        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + contact.address" target="_blank">
+          {{ contact.address }}
+        </a>
+      </p>
+    </div>
+  </div> -->
+
     <!-- Modal de confirmación de eliminación -->
-    <div class="modal" *ngIf="showDeleteModal">
+    <!-- <div class="modal" *ngIf="showDeleteModal">
       <div class="modal-content">
         <h3>Confirm Deletion</h3>
         <p>Are you sure you want to delete this contact?</p>
@@ -39,7 +106,7 @@
         <button (click)="closeDeleteModal(); $event.stopPropagation()">Cancel</button>
       </div>
     </div>
-</div>
+</div> -->
 
 
 <!-- <div class="contact-card" [ngClass]="{'favorite-contact-card': contact.isFavorite}" >

@@ -125,6 +125,21 @@ openMaps(): void {
     console.error('La dirección no está disponible.');
   }
 }
+
+getAvatarColor(name: string): string {
+  if (!name) {
+    return '#cccccc'; // Color por defecto
+  }
+
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash += name.charCodeAt(i);
+  }
+
+  const hue = hash % 360; // Calcula un valor de tono único
+  return `hsl(${hue}, 70%, 80%)`; // Colores pastel
+}
+
 }
 
 
