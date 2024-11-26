@@ -1,24 +1,38 @@
 <nav class="navbar">
   <div class="navbar-container">
-    <a routerLink="/contacts" class="navbar-brand">CONTACTS</a>
+    <a routerLink="/contacts" class="navbar-brand">Contacts</a>
     <ul class="navbar-links">
+      <!-- Mostrar estas opciones solo si el usuario está autenticado -->
+      <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
+      <li *ngIf="isAuthenticated"><a (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- <nav class="navbar">
+  <div class="navbar-container">
+    <a routerLink="/contacts" class="navbar-brand">CONTACTS</a>
+    <ul class="navbar-links"> -->
       <!-- <li><a routerLink="/">Home</a></li> -->
 
       <!-- Mostrar estas opciones solo si el usuario está autenticado -->
-      <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
+      <!-- <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li> -->
       <!-- <li *ngIf="isAuthenticated"><a routerLink="/favorites">Favorites</a></li> -->
       <!-- <li *ngIf="isAuthenticated"><a routerLink="/groups">Groups</a></li>
       <li *ngIf="isAuthenticated"><a routerLink="/settings">Settings</a></li> -->
 
       <!-- Mostrar solo si el usuario no está autenticado -->
-      <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
-      <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
+      <!-- <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li> -->
 
       <!-- Mostrar el botón de Logout solo si el usuario está autenticado -->
-      <li *ngIf="isAuthenticated"><a (click)="logout()">Logout</a></li>
+      <!-- <li *ngIf="isAuthenticated"><a (click)="logout()">Logout</a></li>
     </ul>
   </div>
-</nav>
+</nav> -->
 
 
 <!-- <nav class="navbar">
