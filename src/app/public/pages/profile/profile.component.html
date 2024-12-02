@@ -1,0 +1,220 @@
+<div class="profile-container">
+    <h2>Your Profile</h2>
+  
+    <!-- Formulario de Edición del Perfil -->
+    <form (ngSubmit)="updateProfile()">
+      <!-- Campos de perfil -->
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input id="userName" [(ngModel)]="user.userName" name="userName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" [(ngModel)]="user.name" name="name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" [(ngModel)]="user.lastName" name="lastName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" [(ngModel)]="user.email" name="email" class="form-control" type="email" required />
+      </div>
+  
+      <!-- Sección de cambio de contraseña -->
+      <h3>Change Password</h3>
+      <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <div class="password-container">
+          <input
+            id="currentPassword"
+            [(ngModel)]="passwordData.currentPassword"
+            name="currentPassword"
+            class="form-control"
+            [type]="showCurrentPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('current')">
+            <fa-icon [icon]="showCurrentPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <div class="password-container">
+          <input
+            id="newPassword"
+            [(ngModel)]="passwordData.newPassword"
+            name="newPassword"
+            class="form-control"
+            [type]="showNewPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('new')">
+            <fa-icon [icon]="showNewPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <div class="password-container">
+          <input
+            id="confirmPassword"
+            [(ngModel)]="passwordData.confirmPassword"
+            name="confirmPassword"
+            class="form-control"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirm')">
+            <fa-icon [icon]="showConfirmPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+      </div>
+  
+      <!-- Botón de guardar cambios -->
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+  
+
+<!-- <div class="profile-container">
+    <h2>Your Profile</h2>
+  
+    
+    <form (ngSubmit)="updateProfile()">
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input id="userName" [(ngModel)]="user.userName" name="userName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" [(ngModel)]="user.name" name="name" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" [(ngModel)]="user.lastName" name="lastName" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" [(ngModel)]="user.email" name="email" class="form-control" type="email" required />
+      </div>
+  
+     
+      <h3>Change Password</h3>
+      <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <div class="password-container">
+          <input
+            id="currentPassword"
+            [(ngModel)]="passwordData.currentPassword"
+            name="currentPassword"
+            class="form-control"
+            [type]="showCurrentPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('current')">
+            <i class="fas" [ngClass]="showCurrentPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <div class="password-container">
+          <input
+            id="newPassword"
+            [(ngModel)]="passwordData.newPassword"
+            name="newPassword"
+            class="form-control"
+            [type]="showNewPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('new')">
+            <i class="fas" [ngClass]="showNewPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <div class="password-container">
+          <input
+            id="confirmPassword"
+            [(ngModel)]="passwordData.confirmPassword"
+            name="confirmPassword"
+            class="form-control"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirm')">
+            <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+      </div> -->
+  
+      <!-- <h3>Change Password</h3>
+      <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <input id="currentPassword" [(ngModel)]="passwordData.currentPassword" name="currentPassword" class="form-control" type="password" />
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <input id="newPassword" [(ngModel)]="passwordData.newPassword" name="newPassword" class="form-control" type="password" />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input id="confirmPassword" [(ngModel)]="passwordData.confirmPassword" name="confirmPassword" class="form-control" type="password" />
+      </div> -->
+  
+      <!-- Botón de guardar cambios -->
+      <!-- <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div> -->
+  
+<!-- <div class="profile-container">
+    <h2>Your Profile</h2>
+  
+    
+    <div class="tabs">
+      <button [class.active]="activeTab === 'details'" (click)="setActiveTab('details')">Edit Profile</button>
+      <button [class.active]="activeTab === 'password'" (click)="setActiveTab('password')">Change Password</button>
+    </div>
+  
+   
+    
+    <div *ngIf="activeTab === 'details'">
+      <form (ngSubmit)="updateProfile()">
+        <div class="form-group">
+          <label for="userName">User Name</label>
+          <input id="userName" [(ngModel)]="user.userName" name="userName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input id="name" [(ngModel)]="user.name" name="name" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" [(ngModel)]="user.lastName" name="lastName" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" [(ngModel)]="user.email" name="email" class="form-control" type="email" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </div>
+  
+    
+    
+    <div *ngIf="activeTab === 'password'">
+      <form (ngSubmit)="changePassword()">
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input id="currentPassword" [(ngModel)]="passwordData.currentPassword" name="currentPassword" class="form-control" type="password" required />
+        </div>
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input id="newPassword" [(ngModel)]="passwordData.newPassword" name="newPassword" class="form-control" type="password" required />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm New Password</label>
+          <input id="confirmPassword" [(ngModel)]="passwordData.confirmPassword" name="confirmPassword" class="form-control" type="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Change Password</button>
+      </form>
+    </div>
+  </div>
+   -->
