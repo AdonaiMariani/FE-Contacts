@@ -7,7 +7,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'],
+  styleUrls: ['../../../shared/styles/login-register-styles.css'],
 })
 export class ProfileComponent implements OnInit {
   faEye = faEye;
