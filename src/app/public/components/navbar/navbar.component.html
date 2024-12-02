@@ -1,15 +1,87 @@
+<!-- CON PROFILE -->
 <nav class="navbar">
   <div class="navbar-container">
+    <!-- Logo o nombre de la aplicación -->
     <a routerLink="/contacts" class="navbar-brand">Contacts</a>
+
+    <!-- Navegación -->
     <ul class="navbar-links">
       <!-- Mostrar estas opciones solo si el usuario está autenticado -->
       <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
       <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
       <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
-      <li *ngIf="isAuthenticated"><a (click)="logout()">Logout</a></li>
+
+      <!-- Avatar y menú del usuario -->
+      <li *ngIf="isAuthenticated" class="navbar-profile">
+        <div class="profile-container" (click)="toggleProfileMenu($event)">
+          <img
+            [src]="userAvatarUrl || defaultAvatarUrl"
+            alt="User Avatar"
+            class="profile-avatar"
+          />
+          <span class="profile-name">{{ userName }}</span>
+        </div>
+
+        <!-- Menú desplegable -->
+        <ul class="profile-menu" [class.open]="isProfileMenuOpen">
+          <li><a routerLink="/profile" (click)="isProfileMenuOpen = false">View Profile</a></li>
+          <li><a routerLink="/settings" (click)="isProfileMenuOpen = false">Settings</a></li>
+          <li><a (click)="logout()">Logout</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </nav>
+
+<!-- CON PROFILE -->
+<!-- <nav class="navbar">
+  <div class="navbar-container">
+    
+    <a routerLink="/contacts" class="navbar-brand">Contacts</a>
+
+   
+    <ul class="navbar-links">
+      
+      <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
+
+      
+      <li *ngIf="isAuthenticated" class="navbar-profile">
+        <div class="profile-container" (click)="toggleProfileMenu()">
+          <img
+            [src]="userAvatarUrl || defaultAvatarUrl"
+            alt="User Avatar"
+            class="profile-avatar"
+          />
+          <span class="profile-name">{{ userName }}</span>
+        </div>
+
+        
+        <ul class="profile-menu" [class.open]="isProfileMenuOpen">
+          <li><a routerLink="/profile">View Profile</a></li>
+          <li><a routerLink="/settings">Settings</a></li>
+          <li><a (click)="logout()">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav> -->
+
+
+<!-- SIN PROFILE -->
+<!-- <nav class="navbar">
+  <div class="navbar-container">
+    <a routerLink="/contacts" class="navbar-brand">Contacts</a>
+    <ul class="navbar-links"> -->
+      <!-- Mostrar estas opciones solo si el usuario está autenticado -->
+      <!-- <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
+      <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
+      <li *ngIf="isAuthenticated"><a (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav> -->
 
 
 <!-- <nav class="navbar">
