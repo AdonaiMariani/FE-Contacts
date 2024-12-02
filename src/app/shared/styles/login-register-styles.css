@@ -89,3 +89,34 @@
   .register-button:hover {
     background-color: #218838;
   }
+
+  /* Estilo para el contenedor de la contraseña */
+
+  .password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-container input {
+    flex: 1;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 16px; 
+    padding: 0;
+    background-color: #fff; 
+    border-radius: 50%; 
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

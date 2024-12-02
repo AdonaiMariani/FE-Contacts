@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,6 +12,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  showPassword = false; // Controla la visibilidad de la contraseña
+  faEye = faEye; // Ícono de ojo
+  faEyeSlash = faEyeSlash; // Ícono de ojo tachado
 
   constructor(
     private authService: AuthService,
@@ -37,6 +40,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }
 
