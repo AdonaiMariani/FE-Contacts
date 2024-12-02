@@ -26,6 +26,12 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./public/pages/register/register.module').then(m => m.RegisterModule)
   },
+  {
+    path: 'profile', // Ruta del perfil
+    loadChildren: () => import('./public/pages/profile/profile.module').then(m => m.ProfileModule),
+    canActivate: [AuthGuard]
+  },
+  
 
 ];
 

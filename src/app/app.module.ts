@@ -14,6 +14,8 @@ import { RegisterComponent } from './public/pages/register/register.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ProfileComponent } from './public/pages/profile/profile.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     AddEditContactComponent,
     LoginComponent,
     RegisterComponent,
-    //ContactCardComponent
+   //ContactCardComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
   ],
   providers: [
     AuthService,
