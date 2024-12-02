@@ -2,7 +2,10 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { Router } from '@angular/router';
 import { Contact } from 'src/app/interfaces/contact';
 import { ContactService } from 'src/app/services/contact.service';
-
+import { faPhone, faEnvelope, faMapMarkerAlt, faEdit, faTrash, } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 @Component({
   selector: 'app-contact-card',
   templateUrl: './contact-card.component.html',
@@ -15,6 +18,15 @@ export class ContactCardComponent {
 
   showDetails: boolean = false;
   showDeleteModal: boolean = false;
+
+  faStarSolid = faStarSolid;
+  faStarRegular = faStarRegular;
+  faPhone = faPhone;
+  faEnvelope = faEnvelope;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faWhatsapp = faWhatsapp;
 
   constructor(
     private router: Router,

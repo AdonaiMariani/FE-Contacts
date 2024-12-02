@@ -1,8 +1,50 @@
 <!-- CON AVATAR Y BOTONES ORDENADOS -->
 <div class="contact-card" [ngClass]="{'favorite-contact-card': contact.isFavorite}" (click)="openDetails()">
-  <!-- Contenedor principal con todo en una sola línea -->
   <div class="contact-header">
-    <!-- Avatar -->
+    <div class="contact-avatar" [ngStyle]="{ 'background-color': getAvatarColor(contact.name) }">
+      <span class="avatar-placeholder">{{ contact.name.charAt(0).toUpperCase() }}</span>
+    </div>
+
+    <div class="contact-info">
+      <h3 class="contact-name">
+        {{ contact.name }}
+        <button class="favorite-button" (click)="toggleFavorite()" (click)="$event.stopPropagation()">
+          <fa-icon [icon]="contact.isFavorite ? faStarSolid : faStarRegular"></fa-icon>
+        </button>
+      </h3>
+    </div>
+
+    <div class="contact-actions" (click)="$event.stopPropagation()">
+      <div class="primary-actions">
+        <button class="call-button" *ngIf="contact.phone" (click)="callContact()">
+          <fa-icon [icon]="faPhone"></fa-icon>
+        </button>
+        <button class="whatsapp-button" *ngIf="contact.phone" (click)="sendWhatsApp()">
+          <fa-icon [icon]="faWhatsapp"></fa-icon>
+        </button>
+        <button class="email-button" *ngIf="contact.email" (click)="sendEmail()">
+          <fa-icon [icon]="faEnvelope"></fa-icon>
+        </button>
+        <button class="map-button" *ngIf="contact.address" (click)="openMaps()">
+          <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+        </button>
+      </div>
+      <div class="secondary-actions">
+        <button class="edit-button" (click)="onEdit()">
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+        <button class="delete-button" (click)="openDeleteModal()">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="contact-card" [ngClass]="{'favorite-contact-card': contact.isFavorite}" (click)="openDetails()">
+  
+  <div class="contact-header">
+    
     <div
       class="contact-avatar"
       [ngStyle]="{ 'background-color': getAvatarColor(contact.name) }"
@@ -10,7 +52,7 @@
       <span class="avatar-placeholder">{{ contact.name.charAt(0).toUpperCase() }}</span>
     </div>
 
-    <!-- Nombre del contacto y estrella -->
+    
     <div class="contact-info">
       <h3 class="contact-name">
         {{ contact.name }}
@@ -20,7 +62,7 @@
       </h3>
     </div>
 
-    <!-- Botones de acción (todos en la misma línea) -->
+    
     <div class="contact-actions" (click)="$event.stopPropagation()">
       <div class="primary-actions">
         <button class="call-button" *ngIf="contact.phone" (click)="callContact()">📞</button>
@@ -33,7 +75,8 @@
         <button class="delete-button" (click)="openDeleteModal()">🗑️</button>
       </div>
     </div>
-  </div>
+  </div> -->
+<!-- </div> -->
 
   <!-- Modal para los detalles del contacto -->
   <div class="modal" *ngIf="showDetails">
@@ -60,7 +103,7 @@
       <button (click)="closeDeleteModal(); $event.stopPropagation()">Cancel</button>
     </div>
   </div>
-</div>
+
 
 
 

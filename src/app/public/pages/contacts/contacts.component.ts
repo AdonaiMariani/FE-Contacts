@@ -28,6 +28,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         },
       })
     );
+
     this.contactService.getContacts().subscribe();
   }
 
@@ -41,7 +42,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.normalize(contact.name.toLowerCase()).includes(searchTermLower)
     );
 
-    this.groupedContacts = this.groupContacts(filtered);
+    this.groupContacts(filtered);
   }
 
   onContactDeleted(contactId: number): void {
@@ -57,34 +58,134 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.filterContacts();
   }
 
-  groupContacts(contacts: Contact[]): { letter: string; contacts: Contact[] }[] {
-    const groups: { [key: string]: Contact[] } = {
-      Favorites: contacts.filter((contact) => contact.isFavorite),
-    };
+  groupContacts(contacts: Contact[]): void {
+    // Separar favoritos y no favoritos
+    const favoriteContacts = contacts
+      .filter((contact) => contact.isFavorite)
+      .sort((a, b) => a.name.localeCompare(b.name)); // Ordenar favoritos alfabéticamente
 
-    contacts
+    const nonFavoriteContacts = contacts
       .filter((contact) => !contact.isFavorite)
-      .forEach((contact) => {
-        const letter = this.normalize(contact.name.charAt(0).toUpperCase());
-        if (!groups[letter]) {
-          groups[letter] = [];
-        }
-        groups[letter].push(contact);
-      });
+      .sort((a, b) => a.name.localeCompare(b.name)); // Ordenar no favoritos alfabéticamente
 
-    return Object.keys(groups)
-      .sort((a, b) => (a === 'Favorites' ? -1 : a.localeCompare(b))) // Los favoritos siempre primero
+    // Agrupar no favoritos por letra inicial
+    const groupedNonFavorites = nonFavoriteContacts.reduce((acc, contact) => {
+      const letter = this.normalize(contact.name.charAt(0).toUpperCase());
+      if (!acc[letter]) {
+        acc[letter] = [];
+      }
+      acc[letter].push(contact);
+      return acc;
+    }, {} as { [key: string]: Contact[] });
+
+    // Convertir el objeto agrupado en un array y ordenar por letra inicial
+    const groupedByLetter = Object.keys(groupedNonFavorites)
+      .sort()
       .map((letter) => ({
         letter,
-        contacts: groups[letter].sort((a, b) => a.name.localeCompare(b.name)),
+        contacts: groupedNonFavorites[letter],
       }));
+
+    // Combinar favoritos y agrupados por letra
+    this.groupedContacts = [
+      { letter: 'Favorites', contacts: favoriteContacts },
+      ...groupedByLetter,
+    ];
   }
 
   normalize(text: string): string {
-    // Normaliza el texto para eliminar acentos y caracteres especiales
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 }
+
+
+// import { Component, OnInit, OnDestroy } from '@angular/core';
+// import { Contact } from 'src/app/interfaces/contact';
+// import { ContactService } from 'src/app/services/contact.service';
+// import { Subscription } from 'rxjs';
+
+// @Component({
+//   selector: 'app-contacts',
+//   templateUrl: './contacts.component.html',
+//   styleUrls: ['./contacts.component.css'],
+// })
+// export class ContactsComponent implements OnInit, OnDestroy {
+//   contacts: Contact[] = [];
+//   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
+//   searchTerm: string = '';
+//   private subscription: Subscription = new Subscription();
+
+//   constructor(private contactService: ContactService) {}
+
+//   ngOnInit(): void {
+//     this.subscription.add(
+//       this.contactService.contacts$.subscribe({
+//         next: (contacts: Contact[]) => {
+//           this.contacts = contacts;
+//           this.updateFilteredContacts();
+//         },
+//         error: (err) => {
+//           console.error('Error fetching contacts', err);
+//         },
+//       })
+//     );
+//     this.contactService.getContacts().subscribe();
+//   }
+
+//   ngOnDestroy(): void {
+//     this.subscription.unsubscribe();
+//   }
+
+//   filterContacts(): void {
+//     const searchTermLower = this.normalize(this.searchTerm.toLowerCase());
+//     const filtered = this.contacts.filter((contact) =>
+//       this.normalize(contact.name.toLowerCase()).includes(searchTermLower)
+//     );
+
+//     this.groupedContacts = this.groupContacts(filtered);
+//   }
+
+//   onContactDeleted(contactId: number): void {
+//     this.contacts = this.contacts.filter((contact) => contact.id !== contactId);
+//     this.updateFilteredContacts();
+//   }
+
+//   onContactFavoriteChanged(): void {
+//     this.updateFilteredContacts();
+//   }
+
+//   updateFilteredContacts(): void {
+//     this.filterContacts();
+//   }
+
+//   groupContacts(contacts: Contact[]): { letter: string; contacts: Contact[] }[] {
+//     const groups: { [key: string]: Contact[] } = {
+//       Favorites: contacts.filter((contact) => contact.isFavorite),
+//     };
+
+//     contacts
+//       .filter((contact) => !contact.isFavorite)
+//       .forEach((contact) => {
+//         const letter = this.normalize(contact.name.charAt(0).toUpperCase());
+//         if (!groups[letter]) {
+//           groups[letter] = [];
+//         }
+//         groups[letter].push(contact);
+//       });
+
+//     return Object.keys(groups)
+//       .sort((a, b) => (a === 'Favorites' ? -1 : a.localeCompare(b))) // Los favoritos siempre primero
+//       .map((letter) => ({
+//         letter,
+//         contacts: groups[letter].sort((a, b) => a.name.localeCompare(b.name)),
+//       }));
+//   }
+
+//   normalize(text: string): string {
+//     // Normaliza el texto para eliminar acentos y caracteres especiales
+//     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+//   }
+// }
 
 
 
