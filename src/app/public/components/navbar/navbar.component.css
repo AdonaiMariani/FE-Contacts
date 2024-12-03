@@ -22,8 +22,8 @@
 }
 
 .navbar-logo {
-  width: 60px; /* Ajusta el tamaño del logo */
-  height: 60px;
+  width: 70px; /* Ajusta el tamaño del logo */
+  height: 70px;
   display: block;
 }
 
@@ -50,12 +50,18 @@
 }
 
 .navbar-links a {
-  color: white;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px; /* Hace el efecto de fondo redondeado */
+  transition: background-color 0.3s;
+  /* color: white;
   text-decoration: none;
   font-size: 16px;
   padding: 8px 12px;
   border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s; */
 }
 
 .navbar-links a:hover {
@@ -65,7 +71,7 @@
 
 /* Íconos de navegación */
 .navbar-links fa-icon {
-  font-size: 20px;
+  font-size: 24px;
   color: white;
 }
 
@@ -78,12 +84,22 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px; /* Hace el efecto de fondo redondeado */
+  transition: background-color 0.3s; /* Suaviza la transición del color */
+}
+
+.profile-container:hover {
+  background-color: #0056b3; /* Fondo oscuro al pasar el mouse */
 }
 
 .navbar-profile fa-icon {
   font-size: 24px;
-  cursor: pointer;
+  color: white;
+  transition: color 0.3s;
+  /* cursor: pointer; */
 }
+
 
 /* Menú desplegable */
 .profile-menu {
@@ -124,6 +140,7 @@
 .profile-menu li a fa-icon {
   margin-right: 10px;
   font-size: 18px;
+  color: inherit;
 }
 
 .profile-menu li a:hover {
