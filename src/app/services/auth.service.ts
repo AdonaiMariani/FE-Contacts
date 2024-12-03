@@ -80,11 +80,13 @@ export class AuthService {
   getUserId(): number | null {
     const token = this.getToken();
     if (!token) {
+      console.error('Token is missing.');
       return null;
     }
 
     try {
       const decoded: any = jwtDecode(token);
+      console.log('Decoded token:', decoded);
       return parseInt(decoded.sub); // Extrae y convierte la clave `sub` a un número
     } catch (error) {
       console.error('Error decoding token:', error);

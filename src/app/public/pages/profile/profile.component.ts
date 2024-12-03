@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -55,22 +57,54 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // updateProfile(): void {
+  //   if (this.profileForm.invalid) {
+  //     alert('Please fix the errors before submitting.');
+  //     return;
+  //   }
+
+  //   const updatedProfile = this.profileForm.value;
+  //   this.userService.updateUser(updatedProfile).subscribe({
+  //     next: () => {
+  //       alert('Profile updated successfully!');
+  //       this.profileForm.reset();
+  //     },
+  //     error: (err) => console.error('Error updating profile:', err),
+  //   });
+  // }
+
   updateProfile(): void {
     if (this.profileForm.invalid) {
       alert('Please fix the errors before submitting.');
       return;
     }
-
-    const updatedProfile = this.profileForm.value;
+  
+    // Obtén el ID del usuario del token
+    const userId = this.authService.getUserId();
+    if (!userId) {
+      console.error('User ID is undefined.');
+      alert('Could not determine user ID.');
+      return;
+    }
+  
+    // Crea un objeto actualizado con el ID del usuario
+    const updatedProfile = {
+      ...this.profileForm.value,
+      id: userId, // Añade el ID del usuario
+    };
+  
+    console.log('Updated Profile:', updatedProfile); // Verifica el objeto que se enviará
+  
     this.userService.updateUser(updatedProfile).subscribe({
       next: () => {
         alert('Profile updated successfully!');
-        this.profileForm.reset();
+        this.router.navigate(['/contacts']);
+        //this.profileForm.reset();
       },
       error: (err) => console.error('Error updating profile:', err),
     });
   }
-
+  
   passwordMatchValidator(form: FormGroup): null | { passwordMismatch: boolean } {
     const newPassword = form.get('newPassword')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
