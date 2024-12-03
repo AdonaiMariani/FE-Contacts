@@ -1,15 +1,23 @@
 <div class="contacts-header">
+
   <div class="search-container">
-    <input
-      type="text"
-      placeholder="Search Contacts..."
-      [(ngModel)]="searchTerm"
-      (ngModelChange)="filterContacts()"
-      class="search-bar"
-    />
+    <div class="search-bar-wrapper">
+      <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+      <input
+        type="text"
+        placeholder="Search Contacts..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterContacts()"
+        class="search-bar"
+        placeholder="Search Contacts..."
+      />
+    </div>  
   </div>
+
   <div class="add-contact-container">
-    <button routerLink="/contacts/add" class="add-contact-button">+ Add Contact</button>
+    <button routerLink="/contacts/add" class="add-contact-button">
+      <fa-icon [icon]="faPlus" class="add-contact-icon"></fa-icon>
+    </button>
   </div>
 </div>
 

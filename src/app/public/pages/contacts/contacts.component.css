@@ -1,4 +1,105 @@
+/* Contenedor principal de la cabecera */
 .contacts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #f1f1f1; /* Fondo suave */
+  border-bottom: 1px solid #ddd; /* Separación visual */
+}
+
+/* Estilo para la barra de búsqueda */
+.search-container {
+  flex-grow: 1;
+  position: relative;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px; /* Ajustar la posición del ícono */
+  font-size: 16px;
+  color: #555;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 8px 12px 8px 30px; /* Espacio para el ícono */
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Contenedor para el botón de agregar contacto */
+.add-contact-container {
+  margin-left: 15px;
+}
+
+.add-contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%; /* Botón circular */
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s;
+}
+
+.add-contact-button:hover {
+  background-color: #0056b3;
+}
+
+.add-contact-icon {
+  font-size: 16px;
+}
+
+/* Lista de contactos */
+.grouped-contacts h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #666;
+  margin: 15px 0 5px;
+}
+
+.contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Espaciado reducido entre contactos */
+  padding: 5px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .contacts-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,15 +129,15 @@
 }
 
 .search-bar {
-  width: 100%;
+  width: 30%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
   box-sizing: border-box;
-}
+} */
 
 /* Sección de contactos */
-.grouped-contacts h3 {
+/* .grouped-contacts h3 {
   font-size: 18px;
   font-weight: bold;
   color: #666;
@@ -46,7 +147,7 @@
 .contacts-list {
   display: flex;
   flex-direction: column;
-  gap: 4px; /* Espaciado reducido entre contactos */
+  gap: 4px; 
   padding: 5px 0;
 }
 
@@ -67,8 +168,13 @@
 }
 
 .favorite-contact h3 {
-  color: #ffcc00; /* Color amarillo para destacar los contactos favoritos */
-}
+  color: #ffcc00; 
+} */
+
+
+
+
+
 
 
 /* .contacts-header {

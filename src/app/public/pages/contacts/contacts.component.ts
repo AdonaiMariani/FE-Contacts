@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Contact } from 'src/app/interfaces/contact';
 import { ContactService } from 'src/app/services/contact.service';
 import { Subscription } from 'rxjs';
-
+import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
@@ -13,6 +13,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
   groupedContacts: { letter: string; contacts: Contact[] }[] = [];
   searchTerm: string = '';
   private subscription: Subscription = new Subscription();
+
+  faSearch = faSearch;
+  faPlus = faPlus;
 
   constructor(private contactService: ContactService) {}
 
