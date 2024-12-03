@@ -1,3 +1,141 @@
+
+//CON BEHAVIOR SUBJECT
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Contact } from '../interfaces/contact';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ContactService {
+  private myAppUrl: string = environment.endpoint;
+  private myApiUrl: string = 'api/Contact/';
+  private contactsSubject = new BehaviorSubject<Contact[]>([]);
+  contacts$ = this.contactsSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  // Obtiene la lista completa de contactos desde el backend y actualiza el BehaviorSubject
+  getContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.myAppUrl}${this.myApiUrl}`).pipe(
+      tap((contacts) => this.contactsSubject.next(contacts)),
+      catchError(this.handleError)
+    );
+  }
+
+  // Obtiene un contacto específico por ID desde el backend
+  getContactById(contactId: number): Observable<Contact> {
+    return this.http.get<Contact>(`${this.myAppUrl}${this.myApiUrl}${contactId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Añade un nuevo contacto a la base de datos y actualiza el BehaviorSubject
+  addContact(newContact: Contact): Observable<Contact> {
+    return this.http.post<Contact>(`${this.myAppUrl}${this.myApiUrl}`, newContact, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
+      tap((contact) => {
+        const currentContacts = this.contactsSubject.value;
+        this.contactsSubject.next([...currentContacts, contact]);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Actualiza un contacto existente en la base de datos y actualiza el BehaviorSubject
+  updateContact(contactId: number, updatedContact: Contact): Observable<void> {
+    return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}`, updatedContact, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
+      tap(() => {
+        const currentContacts = this.contactsSubject.value.map(contact =>
+          contact.id === contactId ? updatedContact : contact
+        );
+        this.contactsSubject.next(currentContacts);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Cambia el estado de favorito de un contacto en la base de datos y actualiza el BehaviorSubject
+  toggleFavorite(contactId: number, isFavorite: boolean): Observable<void> {
+    return this.http.patch<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}/favorite`, isFavorite, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).pipe(
+      tap(() => {
+        const currentContacts = this.contactsSubject.value.map(contact =>
+          contact.id === contactId ? { ...contact, isFavorite } : contact
+        );
+        this.contactsSubject.next(currentContacts);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Elimina un contacto de la base de datos y actualiza el BehaviorSubject
+  deleteContact(contactId: number): Observable<void> {
+    return this.http.delete<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}`).pipe(
+      tap(() => {
+        const currentContacts = this.contactsSubject.value.filter(contact => contact.id !== contactId);
+        this.contactsSubject.next(currentContacts);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // Manejo de errores
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError(() => new Error('Something went wrong; please try again later.'));
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import { Injectable } from '@angular/core';
 // import { Contact } from '../interfaces/contact';
 
@@ -234,104 +372,3 @@
 //     return throwError(() => new Error('Something went wrong; please try again later.'));
 //   }
 // }
-
-//CON BEHAVIOR SUBJECT
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { Contact } from '../interfaces/contact';
-import { environment } from 'src/environments/environment';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ContactService {
-  private myAppUrl: string = environment.endpoint;
-  private myApiUrl: string = 'api/Contact/';
-  private contactsSubject = new BehaviorSubject<Contact[]>([]);
-  contacts$ = this.contactsSubject.asObservable();
-
-  constructor(private http: HttpClient) {}
-
-  // Obtiene la lista completa de contactos desde el backend y actualiza el BehaviorSubject
-  getContacts(): Observable<Contact[]> {
-    return this.http.get<Contact[]>(`${this.myAppUrl}${this.myApiUrl}`).pipe(
-      tap((contacts) => this.contactsSubject.next(contacts)),
-      catchError(this.handleError)
-    );
-  }
-
-  // Obtiene un contacto específico por ID desde el backend
-  getContactById(contactId: number): Observable<Contact> {
-    return this.http.get<Contact>(`${this.myAppUrl}${this.myApiUrl}${contactId}`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  // Añade un nuevo contacto a la base de datos y actualiza el BehaviorSubject
-  addContact(newContact: Contact): Observable<Contact> {
-    return this.http.post<Contact>(`${this.myAppUrl}${this.myApiUrl}`, newContact, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }).pipe(
-      tap((contact) => {
-        const currentContacts = this.contactsSubject.value;
-        this.contactsSubject.next([...currentContacts, contact]);
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  // Actualiza un contacto existente en la base de datos y actualiza el BehaviorSubject
-  updateContact(contactId: number, updatedContact: Contact): Observable<void> {
-    return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}`, updatedContact, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }).pipe(
-      tap(() => {
-        const currentContacts = this.contactsSubject.value.map(contact =>
-          contact.id === contactId ? updatedContact : contact
-        );
-        this.contactsSubject.next(currentContacts);
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  // Cambia el estado de favorito de un contacto en la base de datos y actualiza el BehaviorSubject
-  toggleFavorite(contactId: number, isFavorite: boolean): Observable<void> {
-    return this.http.patch<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}/favorite`, isFavorite, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    }).pipe(
-      tap(() => {
-        const currentContacts = this.contactsSubject.value.map(contact =>
-          contact.id === contactId ? { ...contact, isFavorite } : contact
-        );
-        this.contactsSubject.next(currentContacts);
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  // Elimina un contacto de la base de datos y actualiza el BehaviorSubject
-  deleteContact(contactId: number): Observable<void> {
-    return this.http.delete<void>(`${this.myAppUrl}${this.myApiUrl}${contactId}`).pipe(
-      tap(() => {
-        const currentContacts = this.contactsSubject.value.filter(contact => contact.id !== contactId);
-        this.contactsSubject.next(currentContacts);
-      }),
-      catchError(this.handleError)
-    );
-  }
-
-  // Manejo de errores
-  private handleError(error: any): Observable<never> {
-    console.error('An error occurred:', error);
-    return throwError(() => new Error('Something went wrong; please try again later.'));
-  }
-}

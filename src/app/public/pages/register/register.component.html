@@ -33,7 +33,12 @@
     <div class="form-group" [ngClass]="{ 'has-error': registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty) }">
       <label for="password">Password</label>
       <div class="password-container">
-      <input type="password" id="password" formControlName="password" required />
+        <input
+        type="{{ showPassword ? 'text' : 'password' }}"
+        id="password"
+        formControlName="password"
+        required
+      />
       <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
         <fa-icon [icon]="showPassword ? faEyeSlash : faEye"></fa-icon>
       </button>
