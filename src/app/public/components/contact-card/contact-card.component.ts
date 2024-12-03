@@ -111,12 +111,24 @@ export class ContactCardComponent {
   // Método para llamar al contacto
   callContact(): void {
     if (this.contact.phone) {
-      window.location.href = `tel:${this.contact.phone}`;
+      const phoneNumber = this.contact.phone.trim();
+      const telLink = `tel:${phoneNumber}`;
+      const anchor = document.createElement('a');
+      anchor.href = telLink;
+      anchor.click();
     } else {
       console.error('Número de teléfono no disponible');
     }
-    
   }
+  
+  // callContact(): void {
+  //   if (this.contact.phone) {
+  //     window.location.href = `tel:${this.contact.phone}`;
+  //   } else {
+  //     console.error('Número de teléfono no disponible');
+  //   }
+    
+  // }
 
   // Método para enviar mensaje de WhatsApp al contacto
   sendWhatsApp(): void {
