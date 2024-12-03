@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { faAddressBook, faUserCircle, faUser, faSignOutAlt, faCog, faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -9,6 +9,14 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
   isProfileMenuOpen: boolean = false;
+
+  faAddressBook = faAddressBook;
+  faUserCircle = faUserCircle;
+  faUser = faUser;
+  faSignOutAlt = faSignOutAlt;
+  faCog = faCog;
+  faSignInAlt = faSignInAlt;
+  faUserPlus = faUserPlus;
 
   // Información del usuario
   userAvatarUrl: string | null = null;

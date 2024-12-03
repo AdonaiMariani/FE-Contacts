@@ -1,17 +1,76 @@
 <!-- CON PROFILE -->
+<!-- CON ÍCONOS EN LUGAR DE TEXTOS -->
 <nav class="navbar">
   <div class="navbar-container">
-    <!-- Logo o nombre de la aplicación -->
-    <a routerLink="/contacts" class="navbar-brand">Contacts</a>
-
+    <div class="logo-container">
+      <a routerLink="/contacts" class="navbar-brand">
+       <img src= "assets/images/ContactsLogo2.png" alt="Logo" class="navbar-logo" />
+        
+      </a>
+      <span class="app-name">Contacts</span>
+    </div>  
     <!-- Navegación -->
     <ul class="navbar-links">
-      <!-- Mostrar estas opciones solo si el usuario está autenticado -->
+      <!-- Opciones visibles solo si el usuario está autenticado -->
+      <li *ngIf="isAuthenticated">
+        <a routerLink="/contacts" title="Contacts">
+          <fa-icon [icon]="faAddressBook"></fa-icon>
+        </a>
+      </li>
+      <li *ngIf="!isAuthenticated">
+        <a routerLink="/login" title="Login">
+          <fa-icon [icon]="faSignInAlt"></fa-icon>
+        </a>
+      </li>
+      <li *ngIf="!isAuthenticated">
+        <a routerLink="/register" title="Register">
+          <fa-icon [icon]="faUserPlus"></fa-icon>
+        </a>
+      </li>
+
+      <!-- Ícono de usuario y menú -->
+      <li *ngIf="isAuthenticated" class="navbar-profile">
+        <div class="profile-container" (click)="toggleProfileMenu($event)">
+          <fa-icon [icon]="faUserCircle" title="User"></fa-icon>
+        </div>
+
+        <!-- Menú desplegable -->
+        <ul class="profile-menu" [class.open]="isProfileMenuOpen">
+          <li>
+            <a routerLink="/profile" (click)="isProfileMenuOpen = false">
+              <fa-icon [icon]="faUser"></fa-icon> View Profile
+            </a>
+          </li>
+          <li>
+            <a routerLink="/settings" (click)="isProfileMenuOpen = false">
+              <fa-icon [icon]="faCog"></fa-icon> Settings
+            </a>
+          </li>
+          <li>
+            <a (click)="logout()">
+              <fa-icon [icon]="faSignOutAlt"></fa-icon> Logout
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- CON PROFILE -->
+<!-- <nav class="navbar">
+  <div class="navbar-container">
+    
+    <a routerLink="/contacts" class="navbar-brand">Contacts</a>
+
+   
+    <ul class="navbar-links">
+      
       <li *ngIf="isAuthenticated"><a routerLink="/contacts">Contacts</a></li>
       <li *ngIf="!isAuthenticated"><a routerLink="/login">Login</a></li>
       <li *ngIf="!isAuthenticated"><a routerLink="/register">Register</a></li>
 
-      <!-- Avatar y menú del usuario -->
+      
       <li *ngIf="isAuthenticated" class="navbar-profile">
         <div class="profile-container" (click)="toggleProfileMenu($event)">
           <img
@@ -22,7 +81,7 @@
           <span class="profile-name">{{ userName }}</span>
         </div>
 
-        <!-- Menú desplegable -->
+        
         <ul class="profile-menu" [class.open]="isProfileMenuOpen">
           <li><a routerLink="/profile" (click)="isProfileMenuOpen = false">View Profile</a></li>
           <li><a routerLink="/settings" (click)="isProfileMenuOpen = false">Settings</a></li>
@@ -31,7 +90,7 @@
       </li>
     </ul>
   </div>
-</nav>
+</nav> -->
 
 <!-- CON PROFILE -->
 <!-- <nav class="navbar">
