@@ -42,10 +42,15 @@
     </div>
 
     <!-- Botón para guardar -->
-    <button type="submit" [disabled]="contactForm.invalid">Save</button>
+    <div class="button-container">
+      <button type="submit" [disabled]="contactForm.invalid">Save</button>
 
-    <div *ngIf="formSubmitAttempt && contactForm.invalid" class="form-error-message">
-      Please fix the errors before submitting.
+      <div *ngIf="formSubmitAttempt && contactForm.invalid" class="form-error-message">
+        Please fix the errors before submitting.
+      </div>
+      <button type="button" class="btn btn-secondary cancel-button" (click)="goBack()">
+        Cancel
+      </button>
     </div>
   </form>
 </div>

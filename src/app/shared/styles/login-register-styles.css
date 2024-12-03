@@ -119,4 +119,24 @@
     align-items: center;
     justify-content: center;
   }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Asegura que los botones no estén pegados */
+    gap: 10px; /* Espaciado entre los botones */
+    margin-top: 15px; /* Espaciado superior para separar los botones del formulario */
+  }
   
+  .cancel-button {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    flex: 1; /* Los botones comparten el mismo espacio */
+    transition: background-color 0.3s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #5a6268;
+  }

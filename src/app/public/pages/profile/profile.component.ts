@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +88,11 @@ export class ProfileComponent implements OnInit {
       this.showConfirmPassword = !this.showConfirmPassword;
     }
   }
+
+  goBack(): void {
+    this.location.back();
+  }
+
 }
 
 

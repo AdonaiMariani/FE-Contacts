@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactService } from 'src/app/services/contact.service';
 import { Contact } from 'src/app/interfaces/contact';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-contact',
@@ -18,7 +19,8 @@ export class AddEditContactComponent implements OnInit {
     private fb: FormBuilder,
     private contactService: ContactService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +97,11 @@ export class AddEditContactComponent implements OnInit {
       console.warn('Form is invalid. Please correct the errors before submitting.');
     }
   }
+
+  goBack(): void {
+    this.location.back();
+  }
+
 }
 
      
