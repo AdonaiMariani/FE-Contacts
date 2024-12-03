@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/interfaces/user';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -10,86 +10,179 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['../../../shared/styles/login-register-styles.css'],
 })
 export class ProfileComponent implements OnInit {
+  profileForm!: FormGroup;
   faEye = faEye;
   faEyeSlash = faEyeSlash;
-
-
-  user: User = {
-    id: 0,
-    userName: '',
-    name: '',
-    lastName: '',
-    email: '',
-  };
-
-  passwordData = {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  };
 
   showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
 
-  
   constructor(
+    private fb: FormBuilder,
     private userService: UserService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    // Obtener el ID del usuario autenticado
+    this.profileForm = this.fb.group(
+      {
+        userName: ['', Validators.required],
+        name: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        currentPassword: [''],
+        newPassword: ['', [Validators.minLength(8)]],
+        confirmPassword: [''],
+      },
+      { validators: this.passwordMatchValidator }
+    );
+
+    this.loadUserData();
+  }
+
+  loadUserData(): void {
     const userId = this.authService.getUserId();
     if (userId) {
-      // Cargar datos del usuario
       this.userService.getUserById(userId).subscribe({
-        next: (data) => (this.user = data),
+        next: (data) => {
+          this.profileForm.patchValue(data);
+        },
         error: (err) => console.error('Error fetching user data:', err),
       });
     }
   }
 
   updateProfile(): void {
-    // Validar las contraseñas si se han completado
-    if (this.passwordData.currentPassword || this.passwordData.newPassword || this.passwordData.confirmPassword) {
-      if (!this.passwordData.currentPassword) {
-        alert('Please provide your current password to update it.');
-        return;
-      }
-      if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
-        alert('New password and confirmation do not match.');
-        return;
-      }
-
-      // Añadir las contraseñas al objeto usuario
-      this.user.currentPassword = this.passwordData.currentPassword;
-      this.user.newPassword = this.passwordData.newPassword;
+    if (this.profileForm.invalid) {
+      alert('Please fix the errors before submitting.');
+      return;
     }
 
-    // Enviar la solicitud para actualizar el usuario
-    this.userService.updateUser(this.user).subscribe({
+    const updatedProfile = this.profileForm.value;
+    this.userService.updateUser(updatedProfile).subscribe({
       next: () => {
         alert('Profile updated successfully!');
-        // Limpiar los datos de la contraseña después de actualizar
-        this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
+        this.profileForm.reset();
       },
-      error: (err) => {
-        console.error('Error updating profile:', err);
-        alert('Failed to update profile. Please check your inputs.');
-      },
+      error: (err) => console.error('Error updating profile:', err),
     });
   }
-  togglePasswordVisibility(field: 'current' | 'new' | 'confirm'): void {
-    if (field === 'current') {
+
+  passwordMatchValidator(form: FormGroup): null | { passwordMismatch: boolean } {
+    const newPassword = form.get('newPassword')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return newPassword && confirmPassword && newPassword !== confirmPassword
+      ? { passwordMismatch: true }
+      : null;
+  }
+
+  togglePasswordVisibility(field: 'currentPassword' | 'newPassword' | 'confirmPassword'): void {
+    if (field === 'currentPassword') {
       this.showCurrentPassword = !this.showCurrentPassword;
-    } else if (field === 'new') {
+    } else if (field === 'newPassword') {
       this.showNewPassword = !this.showNewPassword;
-    } else if (field === 'confirm') {
+    } else {
       this.showConfirmPassword = !this.showConfirmPassword;
     }
   }
 }
+
+
+// import { Component, OnInit } from '@angular/core';
+// import { UserService } from 'src/app/services/user.service';
+// import { AuthService } from 'src/app/services/auth.service';
+// import { User } from 'src/app/interfaces/user';
+// import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
+// @Component({
+//   selector: 'app-profile',
+//   templateUrl: './profile.component.html',
+//   styleUrls: ['../../../shared/styles/login-register-styles.css'],
+// })
+// export class ProfileComponent implements OnInit {
+//   faEye = faEye;
+//   faEyeSlash = faEyeSlash;
+
+
+//   user: User = {
+//     id: 0,
+//     userName: '',
+//     name: '',
+//     lastName: '',
+//     email: '',
+//   };
+
+//   passwordData = {
+//     currentPassword: '',
+//     newPassword: '',
+//     confirmPassword: '',
+//   };
+
+//   showCurrentPassword = false;
+//   showNewPassword = false;
+//   showConfirmPassword = false;
+
+  
+//   constructor(
+//     private userService: UserService,
+//     private authService: AuthService
+//   ) {}
+
+//   ngOnInit(): void {
+//     // Obtener el ID del usuario autenticado
+//     const userId = this.authService.getUserId();
+//     if (userId) {
+//       // Cargar datos del usuario
+//       this.userService.getUserById(userId).subscribe({
+//         next: (data) => (this.user = data),
+//         error: (err) => console.error('Error fetching user data:', err),
+//       });
+//     }
+//   }
+
+//   updateProfile(): void {
+//     // Validar las contraseñas si se han completado
+//     if (this.passwordData.currentPassword || this.passwordData.newPassword || this.passwordData.confirmPassword) {
+//       if (!this.passwordData.currentPassword) {
+//         alert('Please provide your current password to update it.');
+//         return;
+//       }
+//       if (this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+//         alert('New password and confirmation do not match.');
+//         return;
+//       }
+
+//       // Añadir las contraseñas al objeto usuario
+//       this.user.currentPassword = this.passwordData.currentPassword;
+//       this.user.newPassword = this.passwordData.newPassword;
+//     }
+
+//     // Enviar la solicitud para actualizar el usuario
+//     this.userService.updateUser(this.user).subscribe({
+//       next: () => {
+//         alert('Profile updated successfully!');
+//         // Limpiar los datos de la contraseña después de actualizar
+//         this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
+//       },
+//       error: (err) => {
+//         console.error('Error updating profile:', err);
+//         alert('Failed to update profile. Please check your inputs.');
+//       },
+//     });
+//   }
+//   togglePasswordVisibility(field: 'current' | 'new' | 'confirm'): void {
+//     if (field === 'current') {
+//       this.showCurrentPassword = !this.showCurrentPassword;
+//     } else if (field === 'new') {
+//       this.showNewPassword = !this.showNewPassword;
+//     } else if (field === 'confirm') {
+//       this.showConfirmPassword = !this.showConfirmPassword;
+//     }
+//   }
+// }
+
+
 
 
 // import { Component, OnInit } from '@angular/core';

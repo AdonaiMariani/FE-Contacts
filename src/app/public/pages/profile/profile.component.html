@@ -2,9 +2,108 @@
     <h2>Your Profile</h2>
   
     <!-- Formulario de Edición del Perfil -->
-    <form (ngSubmit)="updateProfile()">
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
       <!-- Campos de perfil -->
-      <div class="form-group">
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('userName')?.invalid && (profileForm.get('userName')?.touched || profileForm.get('userName')?.dirty) }"
+      >
+        <label for="userName">User Name</label>
+        <input type="text" id="userName" formControlName="userName" required />
+        <div class="error-message" *ngIf="profileForm.get('userName')?.invalid && (profileForm.get('userName')?.touched || profileForm.get('userName')?.dirty)">
+          <small>El nombre de usuario es obligatorio.</small>
+        </div>
+      </div>
+  
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('name')?.invalid && (profileForm.get('name')?.touched || profileForm.get('name')?.dirty) }"
+      >
+        <label for="name">Name</label>
+        <input type="text" id="name" formControlName="name" required />
+        <div class="error-message" *ngIf="profileForm.get('name')?.invalid && (profileForm.get('name')?.touched || profileForm.get('name')?.dirty)">
+          <small>El nombre es obligatorio.</small>
+        </div>
+      </div>
+  
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.touched || profileForm.get('lastName')?.dirty) }"
+      >
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" formControlName="lastName" required />
+        <div class="error-message" *ngIf="profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.touched || profileForm.get('lastName')?.dirty)">
+          <small>El apellido es obligatorio.</small>
+        </div>
+      </div>
+  
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('email')?.invalid && (profileForm.get('email')?.touched || profileForm.get('email')?.dirty) }"
+      >
+        <label for="email">Email</label>
+        <input type="email" id="email" formControlName="email" required />
+        <div class="error-message" *ngIf="profileForm.get('email')?.invalid && (profileForm.get('email')?.touched || profileForm.get('email')?.dirty)">
+          <small *ngIf="profileForm.get('email')?.errors?.['required']">El correo electrónico es obligatorio.</small>
+          <small *ngIf="profileForm.get('email')?.errors?.['email']">Por favor, ingresa un correo electrónico válido.</small>
+        </div>
+      </div>
+  
+      <!-- Sección de cambio de contraseña -->
+      <h3>Change Password</h3>
+  
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('currentPassword')?.invalid && (profileForm.get('currentPassword')?.touched || profileForm.get('currentPassword')?.dirty) }"
+      >
+        <label for="currentPassword">Current Password</label>
+        <div class="password-container">
+          <input
+            type="password"
+            id="currentPassword"
+            formControlName="currentPassword"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('currentPassword')">
+            <fa-icon [icon]="showCurrentPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="profileForm.get('currentPassword')?.invalid && (profileForm.get('currentPassword')?.touched || profileForm.get('currentPassword')?.dirty)">
+          <small>La contraseña actual es obligatoria para actualizarla.</small>
+        </div>
+      </div>
+  
+      <div
+        class="form-group"
+        [ngClass]="{ 'has-error': profileForm.get('newPassword')?.invalid && (profileForm.get('newPassword')?.touched || profileForm.get('newPassword')?.dirty) }"
+      >
+        <label for="newPassword">New Password</label>
+        <div class="password-container">
+          <input
+            type="password"
+            id="newPassword"
+            formControlName="newPassword"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility('newPassword')">
+            <fa-icon [icon]="showNewPassword ? faEyeSlash : faEye"></fa-icon>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="profileForm.get('newPassword')?.invalid && (profileForm.get('newPassword')?.touched || profileForm.get('newPassword')?.dirty)">
+          <small *ngIf="profileForm.get('newPassword')?.errors?.['minlength']">La nueva contraseña debe tener al menos 8 caracteres.</small>
+        </div>
+      </div>
+  
+      <button type="submit" [disabled]="profileForm.invalid" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+  
+
+<!-- <div class="form-container">
+    <h2>Your Profile</h2> -->
+  
+    <!-- Formulario de Edición del Perfil -->
+    <!-- <form (ngSubmit)="updateProfile()"> -->
+      <!-- Campos de perfil -->
+      <!-- <div class="form-group">
         <label for="userName">User Name</label>
         <input id="userName" [(ngModel)]="user.userName" name="userName" class="form-control" required />
       </div>
@@ -19,10 +118,10 @@
       <div class="form-group">
         <label for="email">Email</label>
         <input id="email" [(ngModel)]="user.email" name="email" class="form-control" type="email" required />
-      </div>
+      </div> -->
   
       <!-- Sección de cambio de contraseña -->
-      <h3>Change Password</h3>
+      <!-- <h3>Change Password</h3>
       <div class="form-group">
         <label for="currentPassword">Current Password</label>
         <div class="password-container">
@@ -67,13 +166,17 @@
             <fa-icon [icon]="showConfirmPassword ? faEyeSlash : faEye"></fa-icon>
           </button>
         </div>
-      </div>
+      </div> -->
   
       <!-- Botón de guardar cambios -->
-      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <!-- <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
-  </div>
+  </div> -->
   
+
+
+
+
 
 <!-- <div class="profile-container">
     <h2>Your Profile</h2>
